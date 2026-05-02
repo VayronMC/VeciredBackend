@@ -18,3 +18,13 @@ Durante el desarrollo se implementarán rutas protegidas y políticas de RLS (Ro
 
 ### Nivel 2: Contenedores
 ![Diagrama de Contenedores](./docs/architecture/diagrams/Diagrama%20de%20contenedores%20-%20VeciRed.drawio.svg)
+
+### 🧠 Registro de Decisiones (ADRs)
+Mantenemos un registro de por qué elegimos ciertas tecnologías o caminos de diseño:
+
+| ID | Decisión Técnica | Estado |
+| :--- | :--- | :--- |
+| **001** | [Stack Frontend (React + Vite + Tailwind)](./docs/architecture/adr/0001-frontend-stack.md) | ✅ Aceptado |
+| **002** | [Arquitectura Cliente-Servidor (API REST)](./docs/architecture/adr/0002-tipo-arquitectura.md) | ✅ Aceptado |
+| **003** | [Stack Backend (Node + Express + Supabase)](./docs/architecture/adr/0003-backend-db-stack.md) | ✅ Aceptado |
+| **004** | [Simplificación de Comunicación MVP](./docs/architecture/adr/0004-simplificacion-comunicacion.md) | ✅ Aceptado |
