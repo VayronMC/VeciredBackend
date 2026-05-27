@@ -1,8 +1,10 @@
-import { supabase } from '../config/supabase.js';
+import { createSupabaseClient } from '../config/supabase.js';
 
 export const register = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
   try {
-    const { nombre_completo, correo_electronico, direccion, contraseña } = req.body;
+    const { nombre_completo, correo_electronico, direccion, contraseña, foto_perfil } = req.body;
 
     // Validar campos obligatorios
     if (!nombre_completo || !correo_electronico || !direccion || !contraseña) {
@@ -49,7 +51,8 @@ export const register = async (req, res) => {
         id: authData.user.id,
         nombre_completo,
         correo_electronico,
-        direccion
+        direccion,
+        foto_url: foto_perfil || null
       }])
       .select()
       .single();
@@ -66,7 +69,9 @@ export const register = async (req, res) => {
       user: {
         id: authData.user.id,
         email: authData.user.email,
-        perfil: perfilData
+        nombre_completo: perfilData.nombre_completo,
+        direccion: perfilData.direccion,
+        foto_url: perfilData.foto_url
       }
     });
 
@@ -79,6 +84,8 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
   try {
     const { correo_electronico, contraseña } = req.body;
 
@@ -160,7 +167,9 @@ export const login = async (req, res) => {
       user: {
         id: authData.user.id,
         email: authData.user.email,
-        perfil: perfilData
+        nombre_completo: perfilData.nombre_completo,
+        direccion: perfilData.direccion,
+        foto_url: perfilData.foto_url
       },
       session: {
         access_token: authData.session.access_token,
