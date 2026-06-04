@@ -8,7 +8,7 @@ export const getAllPublications = async (req, res) => {
 
     let query = supabase
       .from('publicaciones')
-      .select('*, perfiles:usuario_id (nombre_completo, correo_electronico, foto_url)')
+      .select('*, perfiles:usuario_id (id, nombre_completo, correo_electronico, foto_url)')
       .eq('estado', 'activa')
       .order('fecha_creacion', { ascending: false });
 
@@ -248,6 +248,45 @@ export const getNotifications = async (req, res) => {
     res.status(200).json({
       notifications,
       count: notifications.length
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error interno del servidor',
+      details: error.message
+    });
+  }
+};
+
+export const getUserPublications = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
+  try {
+    const { usuario_id } = req.params;
+
+    if (!usuario_id) {
+      return res.status(400).json({
+        error: 'usuario_id es obligatorio'
+      });
+    }
+
+    const { data: publications, error } = await supabase
+      .from('publicaciones')
+      .select('*, perfiles:usuario_id (nombre_completo, correo_electronico, foto_url)')
+      .eq('usuario_id', usuario_id)
+      .eq('estado', 'activa')
+      .order('fecha_creacion', { ascending: false });
+
+    if (error) {
+      return res.status(500).json({
+        error: 'Error al obtener publicaciones del usuario',
+        details: error.message
+      });
+    }
+
+    res.status(200).json({
+      publications,
+      count: publications.length
     });
 
   } catch (error) {

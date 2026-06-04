@@ -5,7 +5,8 @@ import {
   createPublication,
   updatePublication,
   deletePublication,
-  getNotifications
+  getNotifications,
+  getUserPublications
 } from '../controllers/publicController.js';
 
 const router = express.Router();
@@ -27,5 +28,8 @@ router.delete('/:id', deletePublication);
 
 // Obtener notificaciones del usuario
 router.get('/notificaciones/list', getNotifications);
+
+// Obtener publicaciones del usuario
+router.get('/user/:usuario_id', getUserPublications);
 
 export default router;

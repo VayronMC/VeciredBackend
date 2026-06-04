@@ -185,3 +185,86 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const getProfile = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
+  try {
+    const { usuario_id } = req.query;
+
+    if (!usuario_id) {
+      return res.status(400).json({
+        error: 'usuario_id es obligatorio'
+      });
+    }
+
+    const { data: perfilData, error: perfilError } = await supabase
+      .from('perfiles')
+      .select('*')
+      .eq('id', usuario_id)
+      .single();
+
+    if (perfilError) {
+      return res.status(404).json({
+        error: 'Perfil no encontrado',
+        details: perfilError.message
+      });
+    }
+
+    res.status(200).json({
+      profile: perfilData
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error interno del servidor',
+      details: error.message
+    });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
+  try {
+    const { usuario_id, nombre_completo, correo_electronico, direccion, biografia, foto_url } = req.body;
+
+    if (!usuario_id) {
+      return res.status(400).json({
+        error: 'usuario_id es obligatorio'
+      });
+    }
+
+    const updateData = {};
+    if (nombre_completo) updateData.nombre_completo = nombre_completo;
+    if (correo_electronico) updateData.correo_electronico = correo_electronico;
+    if (direccion) updateData.direccion = direccion;
+    if (biografia !== undefined) updateData.biografia = biografia;
+    if (foto_url !== undefined) updateData.foto_url = foto_url;
+
+    const { data: perfilData, error: perfilError } = await supabase
+      .from('perfiles')
+      .update(updateData)
+      .eq('id', usuario_id)
+      .select()
+      .single();
+
+    if (perfilError) {
+      return res.status(500).json({
+        error: 'Error al actualizar perfil',
+        details: perfilError.message
+      });
+    }
+
+    res.status(200).json({
+      message: 'Perfil actualizado exitosamente',
+      profile: perfilData
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error interno del servidor',
+      details: error.message
+    });
+  }
+};
