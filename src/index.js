@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import publicRoutes from './routes/publicRoutes.js';
+import solicitudesRoutes from './routes/solicitudesRoutes.js';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -17,7 +18,8 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Rutas
 app.use('/api/auth', authRoutes); // /api/auth/register, /api/auth/login
-app.use('/api/publicaciones', publicRoutes); // /api/publicaciones 
+app.use('/api/publicaciones', publicRoutes); // /api/publicaciones
+app.use('/api/solicitudes', solicitudesRoutes); // /api/solicitudes 
 
 // Ruta de prueba
 app.get('/', (req, res) => {
