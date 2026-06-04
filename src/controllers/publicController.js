@@ -274,7 +274,6 @@ export const getUserPublications = async (req, res) => {
       .from('publicaciones')
       .select('*, perfiles:usuario_id (nombre_completo, correo_electronico, foto_url)')
       .eq('usuario_id', usuario_id)
-      .eq('estado', 'activa')
       .order('fecha_creacion', { ascending: false });
 
     if (error) {
