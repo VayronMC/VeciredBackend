@@ -16,5 +16,3 @@ export const createSupabaseClient = () => {
 
 // Cliente por defecto para compatibilidad
 export const supabase = createSupabaseClient();
-
-console.log('✅ Cliente Supabase inicializado correctamente');

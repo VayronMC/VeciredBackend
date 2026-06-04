@@ -236,7 +236,7 @@ export const getNotifications = async (req, res) => {
       .from('notificaciones')
       .select('*')
       .eq('usuario_id', usuario_id)
-      .order('fecha_creacion', { ascending: true });
+      .order('fecha_creacion', { ascending: false });
 
     if (error) {
       return res.status(500).json({
