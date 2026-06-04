@@ -12,6 +12,27 @@ export const createRequest = async (req, res) => {
       });
     }
 
+    // Verificar si ya existe una solicitud (cualquier estado) para este usuario y publicación
+    const { data: existingSolicitud, error: checkError } = await supabase
+      .from('solicitudes')
+      .select('*')
+      .eq('usuario_id', usuario_id)
+      .eq('publicacion_id', publicacion_id)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      return res.status(500).json({
+        error: 'Error al verificar solicitud existente',
+        details: checkError.message
+      });
+    }
+
+    if (existingSolicitud) {
+      return res.status(409).json({
+        error: 'Ya has tomado esta publicación'
+      });
+    }
+
     const { data: solicitud, error } = await supabase
       .from('solicitudes')
       .insert([{
