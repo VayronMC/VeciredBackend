@@ -136,7 +136,7 @@ export const login = async (req, res) => {
               }
             }
           }
-        } catch (confirmErr) {
+        } catch {
           // Continuar con el error original si la confirmación falla
         }
       }

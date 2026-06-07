@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // Manejo de errores global
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error('Error no manejado:', err);
   res.status(500).json({
     error: 'Error interno del servidor',
