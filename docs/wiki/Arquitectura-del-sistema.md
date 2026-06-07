@@ -35,4 +35,12 @@ Los diagramas oficiales están en el repositorio:
 
 ## Decisiones técnicas (ADRs)
 
-Consulta la carpeta `docs/architecture/ADR/` para el registro de decisiones del equipo.
+Registro en `docs/architecture/ADR/`. Cada ADR documenta contexto, alternativas, decisión, consecuencias e impacto en el MVP.
+
+| ADR | Tema de la rúbrica |
+| :--- | :--- |
+| [0001](https://github.com/VayronMC/VeciredBackend/blob/develop/docs/architecture/ADR/0001-frontend-stack.md) | Lenguaje y frameworks frontend |
+| [0002](https://github.com/VayronMC/VeciredBackend/blob/develop/docs/architecture/ADR/0002-tipo-arquitectura.md) | Arquitectura cliente-servidor y API REST |
+| [0003](https://github.com/VayronMC/VeciredBackend/blob/develop/docs/architecture/ADR/0003-backend-db-stack.md) | Backend, base de datos (PostgreSQL/Supabase) |
+| [0004](https://github.com/VayronMC/VeciredBackend/blob/develop/docs/architecture/ADR/0004-simplificacion-comunicacion.md) | Alcance funcional del MVP |
+| [0005](https://github.com/VayronMC/VeciredBackend/blob/develop/docs/architecture/ADR/0005-herramientas-adicionales.md) | Herramientas adicionales (CI/CD, pruebas, deploy) |
