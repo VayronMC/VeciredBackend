@@ -69,6 +69,7 @@ src/
 | 002 | Arquitectura Cliente-Servidor | [ADR-002](./docs/architecture/ADR/0002-tipo-arquitectura.md) |
 | 003 | Stack Backend + Supabase | [ADR-003](./docs/architecture/ADR/0003-backend-db-stack.md) |
 | 004 | Simplificación MVP | [ADR-004](./docs/architecture/ADR/0004-simplificacion-comunicacion.md) |
+| 005 | Herramientas adicionales (CI/CD, pruebas, deploy) | [ADR-005](./docs/architecture/ADR/0005-herramientas-adicionales.md) |
 
 ---
 
