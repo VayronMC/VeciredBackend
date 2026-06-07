@@ -1,5 +1,6 @@
 export default {
   testEnvironment: 'node',
+  setupFiles: ['<rootDir>/src/__tests__/setup/env.js'],
   transform: {
     '^.+\\.js$': 'babel-jest'
   },

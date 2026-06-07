@@ -1,5 +1,11 @@
 import { createSupabaseClient } from '../config/supabase.js';
 
+/**
+ * Registra la intención de un vecino de ayudar en una publicación del tablón.
+ * @param {import('express').Request} req - Cuerpo con usuario_id y publicacion_id
+ * @param {import('express').Response} res - Respuesta 201 con solicitud o 409 si ya existe
+ * @returns {Promise<void>}
+ */
 export const createRequest = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -63,6 +69,12 @@ export const createRequest = async (req, res) => {
   }
 };
 
+/**
+ * Obtiene las solicitudes activas de ayuda de un vecino con datos de la publicación relacionada.
+ * @param {import('express').Request} req - Param usuario_id (UUID)
+ * @param {import('express').Response} res - Respuesta 200 con solicitudes y count
+ * @returns {Promise<void>}
+ */
 export const getUserRequests = async (req, res) => {
   const supabase = createSupabaseClient();
   
