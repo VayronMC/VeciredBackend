@@ -1,0 +1,54 @@
+name: Pipeline CI/CD VeciRed Backend
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  ci:
+    name: Integración continua
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar lint
+        run: npm run lint
+
+      - name: Ejecutar pruebas automatizadas
+        run: npm test
+
+  deploy:
+    name: Despliegue continuo (producción)
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Validar que el backend está listo para producción
+        run: npm test
+
+      - name: Despliegue a producción
+        run: echo "Pipeline de despliegue continuo ejecutado. El backend está validado y listo para publicarse en producción."

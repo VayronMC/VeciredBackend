@@ -1,0 +1,115 @@
+import { createSupabaseClient } from '../config/supabase.js';
+
+/**
+ * Registra la intención de un vecino de ayudar en una publicación del tablón.
+ * @param {import('express').Request} req - Cuerpo con usuario_id y publicacion_id
+ * @param {import('express').Response} res - Respuesta 201 con solicitud o 409 si ya existe
+ * @returns {Promise<void>}
+ */
+export const createRequest = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
+  try {
+    const { usuario_id, publicacion_id } = req.body;
+
+    if (!usuario_id || !publicacion_id) {
+      return res.status(400).json({
+        error: 'usuario_id y publicacion_id son obligatorios'
+      });
+    }
+
+    // Verificar si ya existe una solicitud (cualquier estado) para este usuario y publicación
+    const { data: existingSolicitud, error: checkError } = await supabase
+      .from('solicitudes')
+      .select('*')
+      .eq('usuario_id', usuario_id)
+      .eq('publicacion_id', publicacion_id)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      return res.status(500).json({
+        error: 'Error al verificar solicitud existente',
+        details: checkError.message
+      });
+    }
+
+    if (existingSolicitud) {
+      return res.status(409).json({
+        error: 'Ya has tomado esta publicación'
+      });
+    }
+
+    const { data: solicitud, error } = await supabase
+      .from('solicitudes')
+      .insert([{
+        usuario_id,
+        publicacion_id,
+        estado: 'activa'
+      }])
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        error: 'Error al crear solicitud',
+        details: error.message
+      });
+    }
+
+    res.status(201).json({
+      message: 'Solicitud creada exitosamente',
+      solicitud
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error interno del servidor',
+      details: error.message
+    });
+  }
+};
+
+/**
+ * Obtiene las solicitudes activas de ayuda de un vecino con datos de la publicación relacionada.
+ * @param {import('express').Request} req - Param usuario_id (UUID)
+ * @param {import('express').Response} res - Respuesta 200 con solicitudes y count
+ * @returns {Promise<void>}
+ */
+export const getUserRequests = async (req, res) => {
+  const supabase = createSupabaseClient();
+  
+  try {
+    const { usuario_id } = req.params;
+
+    if (!usuario_id) {
+      return res.status(400).json({
+        error: 'usuario_id es obligatorio'
+      });
+    }
+
+    const { data: solicitudes, error } = await supabase
+      .from('solicitudes')
+      .select('*, publicaciones:publicacion_id (*, perfiles:usuario_id (nombre_completo, correo_electronico, foto_url))')
+      .eq('usuario_id', usuario_id)
+      .eq('estado', 'activa')
+      .order('fecha_creacion', { ascending: false });
+
+    if (error) {
+      return res.status(500).json({
+        error: 'Error al obtener solicitudes del usuario',
+        details: error.message
+      });
+    }
+
+    res.status(200).json({
+      solicitudes,
+      count: solicitudes.length
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: 'Error interno del servidor',
+      details: error.message
+    });
+  }
+};
