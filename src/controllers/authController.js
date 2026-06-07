@@ -1,5 +1,11 @@
 import { createSupabaseClient } from '../config/supabase.js';
 
+/**
+ * Registra un nuevo vecino en Supabase Auth y crea su perfil en la base de datos.
+ * @param {import('express').Request} req - Cuerpo con nombre_completo, correo_electronico, direccion, contraseña y foto_perfil opcional
+ * @param {import('express').Response} res - Respuesta 201 con datos del usuario o error 400/500
+ * @returns {Promise<void>}
+ */
 export const register = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -83,6 +89,12 @@ export const register = async (req, res) => {
   }
 };
 
+/**
+ * Autentica a un vecino con correo y contraseña, devolviendo perfil y tokens de sesión.
+ * @param {import('express').Request} req - Cuerpo con correo_electronico y contraseña
+ * @param {import('express').Response} res - Respuesta 200 con user y session o error 400/500
+ * @returns {Promise<void>}
+ */
 export const login = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -186,6 +198,12 @@ export const login = async (req, res) => {
   }
 };
 
+/**
+ * Obtiene el perfil completo de un vecino a partir de su identificador.
+ * @param {import('express').Request} req - Query param usuario_id (UUID)
+ * @param {import('express').Response} res - Respuesta 200 con profile o error 404
+ * @returns {Promise<void>}
+ */
 export const getProfile = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -223,6 +241,12 @@ export const getProfile = async (req, res) => {
   }
 };
 
+/**
+ * Actualiza los datos editables del perfil de un vecino.
+ * @param {import('express').Request} req - Cuerpo con usuario_id y campos opcionales del perfil
+ * @param {import('express').Response} res - Respuesta 200 con profile actualizado
+ * @returns {Promise<void>}
+ */
 export const updateProfile = async (req, res) => {
   const supabase = createSupabaseClient();
   

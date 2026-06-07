@@ -1,5 +1,11 @@
 import { createSupabaseClient } from '../config/supabase.js';
 
+/**
+ * Crea una reseña y calificación entre vecinos tras completar una solicitud de ayuda.
+ * @param {import('express').Request} req - Cuerpo con usuario_id, evaluado_id, publicacion_id, solicitud_id, calificacion y comentario
+ * @param {import('express').Response} res - Respuesta 201 con resena creada
+ * @returns {Promise<void>}
+ */
 export const createResena = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -51,6 +57,12 @@ export const createResena = async (req, res) => {
   }
 };
 
+/**
+ * Obtiene las reseñas recibidas por un vecino (evaluado).
+ * @param {import('express').Request} req - Param id del vecino evaluado
+ * @param {import('express').Response} res - Respuesta 200 con resenas y count
+ * @returns {Promise<void>}
+ */
 export const getResenasByUser = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -89,6 +101,12 @@ export const getResenasByUser = async (req, res) => {
   }
 };
 
+/**
+ * Actualiza el estado de una solicitud (pendiente o completada) al finalizar una ayuda.
+ * @param {import('express').Request} req - Param id de solicitud y cuerpo con estado
+ * @param {import('express').Response} res - Respuesta 200 con solicitud actualizada
+ * @returns {Promise<void>}
+ */
 export const updateSolicitudEstado = async (req, res) => {
   const supabase = createSupabaseClient();
   

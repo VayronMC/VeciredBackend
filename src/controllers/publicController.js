@@ -1,5 +1,11 @@
 import { createSupabaseClient } from '../config/supabase.js';
 
+/**
+ * Lista publicaciones activas del tablón con filtros opcionales por categoría y búsqueda.
+ * @param {import('express').Request} req - Query opcional: categoria, search
+ * @param {import('express').Response} res - Respuesta 200 con publications y count
+ * @returns {Promise<void>}
+ */
 export const getAllPublications = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -43,6 +49,12 @@ export const getAllPublications = async (req, res) => {
   }
 };
 
+/**
+ * Obtiene el detalle de una publicación por su identificador.
+ * @param {import('express').Request} req - Param id (UUID de la publicación)
+ * @param {import('express').Response} res - Respuesta 200 con publication o 404
+ * @returns {Promise<void>}
+ */
 export const getPublicationById = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -72,6 +84,12 @@ export const getPublicationById = async (req, res) => {
   }
 };
 
+/**
+ * Crea una publicación en el tablón comunitario y genera notificaciones para otros vecinos.
+ * @param {import('express').Request} req - Cuerpo con titulo, descripcion, categoria, usuario_id, telefono
+ * @param {import('express').Response} res - Respuesta 201 con publication creada
+ * @returns {Promise<void>}
+ */
 export const createPublication = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -148,6 +166,12 @@ export const createPublication = async (req, res) => {
   }
 };
 
+/**
+ * Actualiza los campos editables de una publicación existente.
+ * @param {import('express').Request} req - Param id y cuerpo con campos a modificar
+ * @param {import('express').Response} res - Respuesta 200 con publication actualizada
+ * @returns {Promise<void>}
+ */
 export const updatePublication = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -190,6 +214,12 @@ export const updatePublication = async (req, res) => {
   }
 };
 
+/**
+ * Elimina permanentemente una publicación del tablón.
+ * @param {import('express').Request} req - Param id (UUID)
+ * @param {import('express').Response} res - Respuesta 200 con mensaje de confirmación
+ * @returns {Promise<void>}
+ */
 export const deletePublication = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -220,6 +250,12 @@ export const deletePublication = async (req, res) => {
   }
 };
 
+/**
+ * Obtiene las notificaciones de nuevas publicaciones para un vecino.
+ * @param {import('express').Request} req - Query param usuario_id
+ * @param {import('express').Response} res - Respuesta 200 con notifications y count
+ * @returns {Promise<void>}
+ */
 export const getNotifications = async (req, res) => {
   const supabase = createSupabaseClient();
   
@@ -258,6 +294,12 @@ export const getNotifications = async (req, res) => {
   }
 };
 
+/**
+ * Lista todas las publicaciones creadas por un vecino específico.
+ * @param {import('express').Request} req - Param usuario_id (UUID)
+ * @param {import('express').Response} res - Respuesta 200 con publications y count
+ * @returns {Promise<void>}
+ */
 export const getUserPublications = async (req, res) => {
   const supabase = createSupabaseClient();
   

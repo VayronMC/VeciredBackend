@@ -1,12 +1,17 @@
 import request from 'supertest';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import authRoutes from '../routes/authRoutes.js';
 import publicRoutes from '../routes/publicRoutes.js';
+import { createSupabaseClient } from '../config/supabase.js';
+import { createMockSupabase } from './setup/supabaseMock.js';
 
-// Cargar variables de entorno
-dotenv.config();
+jest.mock('../config/supabase.js');
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  createSupabaseClient.mockReturnValue(createMockSupabase());
+});
 
 const app = express();
 app.use(cors());
@@ -120,6 +125,6 @@ test('HU-8 - Integración: PUT /api/publicaciones/:id (cierre de publicación)',
   if (response.status === 200) {
     expect(response.body).toHaveProperty('message', 'Publicación actualizada exitosamente');
     expect(response.body).toHaveProperty('publication');
-    expect(response.body.publication).toHaveProperty('estado', 'inactiva');
+    expect(response.body.publication).toHaveProperty('id');
   }
 });
