@@ -1,14 +1,19 @@
 import request from 'supertest';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import authRoutes from '../routes/authRoutes.js';
 import publicRoutes from '../routes/publicRoutes.js';
 import resenaRoutes from '../routes/resenaRoutes.js';
 import solicitudesRoutes from '../routes/solicitudesRoutes.js';
+import { createSupabaseClient } from '../config/supabase.js';
+import { createMockSupabase } from './setup/supabaseMock.js';
 
-// Cargar variables de entorno
-dotenv.config();
+jest.mock('../config/supabase.js');
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  createSupabaseClient.mockReturnValue(createMockSupabase());
+});
 
 const app = express();
 app.use(cors());
